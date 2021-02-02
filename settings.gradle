@@ -1,0 +1,5 @@
+include ':core'
+include ':snap'
+include ':aui'
+include ':app'
+rootProject.name = "LeapAndroidSample"
