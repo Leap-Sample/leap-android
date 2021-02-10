@@ -4,7 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_leap_bckg"
+    android:background="#0A0B12"
     tools:context=".ui.SplashScrActivity">
 
+
+    <ImageView
+        android:layout_width="52dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="304dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_combined_shape_copy_7" />
+
+    <ImageView
+        android:layout_width="52dp"
+        android:layout_height="21dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:srcCompat="@drawable/ic_leap_text" />
+
+    <ImageView
+        android:layout_width="113dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="368dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_sample" />
+
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/guideline"
+        app:srcCompat="@drawable/ic_combined_shape_copy_7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.39" />
 </androidx.constraintlayout.widget.ConstraintLayout>

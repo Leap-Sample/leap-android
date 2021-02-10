@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Build;
 import android.util.SparseArray;
 import android.view.View;
@@ -19,23 +18,21 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.listeners.ValidationListener;
-import is.leap.android.sample.service.LeapService;
 import is.leap.android.sample.ui.RegisterActivity;
 
-public class Utils {
+import static is.leap.android.sample.Constants.DISABLE;
+import static is.leap.android.sample.Constants.LEAP;
+import static is.leap.android.sample.Constants.NOTIFICATION_ID;
+import static is.leap.android.sample.Constants.OWNER;
 
-    private static final String LEAP = "LEAP";
-    private static final String OWNER = "owner";
-    private static final int NotificationID = 1;
+public class Utils {
 
     public static boolean isLeapValidatedApp(SparseArray<Barcode> barcodeSparseArray, ValidationListener validationListener) throws JSONException {
         if( barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;
@@ -106,18 +103,14 @@ public class Utils {
         return point.y;
     }
 
-    public static void showNotification(Context context, boolean isNotificationActive){
-        showNotification(context, null, isNotificationActive);
-    }
-
-    public static void showNotification(Context context, String applicationName, boolean isNotificationActive) {
+    public static void showNotification(Context context, String applicationName, boolean hideNotification) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if( !isNotificationActive ){
-            notificationManager.cancelAll();
+        if( hideNotification ){
+            notificationManager.cancel(NOTIFICATION_ID);
             return;
         }
-        notificationManager.notify(NotificationID, getNotification(context, applicationName));
+        notificationManager.notify(NOTIFICATION_ID, getNotification(context, applicationName));
     }
 
     public static Notification getNotification(Context context, String applicationName) {
@@ -129,17 +122,18 @@ public class Utils {
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
+        switchIntent.putExtra(DISABLE, true);
         PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
 
         RemoteViews contentView = getCustomLayout(context, pendingSwitchIntent, applicationName);
 
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
         leapNotifyBuilder.setContent(contentView);
-        leapNotifyBuilder.setAutoCancel(false);
-        leapNotifyBuilder.setOngoing(true);
+        leapNotifyBuilder.setAutoCancel(true); //dismissed when tapped automatically
+        leapNotifyBuilder.setOngoing(false);
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
-        leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
+        leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH | Notification.FLAG_AUTO_CANCEL;;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "leap_qr_notification";
@@ -162,5 +156,10 @@ public class Utils {
         contentView.setOnClickPendingIntent(R.layout.layout_notification, pendingSwitchIntent);
         contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
         return contentView;
+    }
+
+    public static void hideNotification(Context context, boolean disappearNotification) {
+        showNotification(context, null, disappearNotification);
+
     }
 }

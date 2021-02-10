@@ -29,12 +29,12 @@ public class LeapService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground(NOTIFICATION_ID, Utils.getNotification(this, LeapSampleSharedPref.getInstance().getRegisteredApp()));
+        startForeground(NOTIFICATION_ID, Utils.getNotification(this.getApplicationContext(), LeapSampleSharedPref.getInstance().getRegisteredApp()));
     }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        startForeground(NOTIFICATION_ID, Utils.getNotification(this, LeapSampleSharedPref.getInstance().getRegisteredApp()));
+        startForeground(NOTIFICATION_ID, Utils.getNotification(this.getApplicationContext(), LeapSampleSharedPref.getInstance().getRegisteredApp()));
         return START_STICKY;
     }
 
