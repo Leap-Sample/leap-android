@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -32,7 +34,7 @@ public class Utils {
 
     private static final String LEAP = "LEAP";
     private static final String OWNER = "owner";
-    private static final int NotificationID = 1005;
+    private static final int NotificationID = 1;
 
     public static boolean isLeapValidatedApp(SparseArray<Barcode> barcodeSparseArray, ValidationListener validationListener) throws JSONException {
         if( barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;
@@ -114,12 +116,12 @@ public class Utils {
             notificationManager.cancelAll();
             return;
         }
+        notificationManager.notify(NotificationID, getNotification(context, applicationName));
+    }
 
+    public static Notification getNotification(Context context, String applicationName) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder leapNotifyBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "leap_qr_notification");
-
-        //TODO : Custom Views not working, need to recheck
-//        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.layout_notification);
-//        contentView.setTextViewText(R.id.appNameTitle, applicationName);
 
         Intent switchIntent = new Intent(context, RegisterActivity.class);
         switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -127,7 +129,11 @@ public class Utils {
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
-        //contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
+
+//        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
+//        contentView.setTextViewText(R.id.appNameTitle, applicationName);
+//        contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
+
 
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
         leapNotifyBuilder.setContentTitle(applicationName);
@@ -139,7 +145,7 @@ public class Utils {
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
         leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
-        //  leapNotifyBuilder.setContent(contentView);
+       // leapNotifyBuilder.setContent(contentView);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "leap_qr_notification";
@@ -148,8 +154,6 @@ public class Utils {
             leapNotifyBuilder.setChannelId(channelId);
         }
 
-        Notification notification = leapNotifyBuilder.build();
-        notificationManager.notify(NotificationID, notification);
+        return leapNotifyBuilder.build();
     }
-
 }

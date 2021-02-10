@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.webkit.WebView;
@@ -24,8 +25,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private LeapService leapService;
     private boolean toShowNotification = false;
-    private ServiceConnection leapServiceConnection;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,45 +33,44 @@ public class HomeActivity extends AppCompatActivity {
         sharedPref = LeapSampleSharedPref.getInstance();
         webUrl = sharedPref.getWebUrl();
         apiKey = sharedPref.getAppApiKey();
-        LeapAUI.init(this, apiKey);
-        LeapSnapSDK.init(this, apiKey);
+        triggerService();
+
         WebView appWebView = findViewById(R.id.webView);
         LeapAUI.addWebInterface(appWebView);
         appWebView.loadUrl(webUrl);
-
-        leapServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                LeapService.LeapBinder leapBinder = (LeapService.LeapBinder) service;
-                leapService = leapBinder.getService();
-                toShowNotification = true;
-                Utils.showNotification(HomeActivity.this, LeapSampleSharedPref.getInstance().getRegisteredApp(), toShowNotification);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                toShowNotification = false;
-            }
-        };
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        leapService.stopSelf();
-        Utils.showNotification(HomeActivity.this,toShowNotification);
+        stopRunningService();
         finish();
+    }
+
+    private void stopRunningService() {
+        Intent intent = new Intent(this, LeapService.class);
+        stopService(intent);
     }
 
     private void triggerService() {
         Intent intent = new Intent(this, LeapService.class);
-        bindService(intent, leapServiceConnection, Context.BIND_AUTO_CREATE);
+        intent.putExtra("appName", LeapSampleSharedPref.getInstance().getRegisteredApp());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }else{
+            startService(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        triggerService();
+        LeapAUI.init(this, apiKey);
+        LeapSnapSDK.init(this, apiKey);
     }
 }
