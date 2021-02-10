@@ -19,6 +19,7 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -130,22 +131,15 @@ public class Utils {
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
 
-//        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
-//        contentView.setTextViewText(R.id.appNameTitle, applicationName);
-//        contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
-
+        RemoteViews contentView = getCustomLayout(context, pendingSwitchIntent, applicationName);
 
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
-        leapNotifyBuilder.setContentTitle(applicationName);
-        leapNotifyBuilder.setContentText("Connected");
-        leapNotifyBuilder.setContentIntent(pendingSwitchIntent);
-        leapNotifyBuilder.addAction(R.id.rescanBtn, "Rescan", pendingSwitchIntent);
+        leapNotifyBuilder.setContent(contentView);
         leapNotifyBuilder.setAutoCancel(false);
         leapNotifyBuilder.setOngoing(true);
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
         leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
-       // leapNotifyBuilder.setContent(contentView);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "leap_qr_notification";
@@ -155,5 +149,18 @@ public class Utils {
         }
 
         return leapNotifyBuilder.build();
+    }
+
+    private static RemoteViews getCustomLayout(Context context, PendingIntent pendingSwitchIntent, String applicationName) {
+        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
+        contentView.setTextViewText(R.id.appNameTitle, applicationName);
+        contentView.setImageViewResource(R.id.logo, R.drawable.ic_combined_shape_copy_7);
+        contentView.setImageViewResource(R.id.logoText, R.drawable.ic_leap_text);
+        contentView.setImageViewResource(R.id.connected, R.drawable.ic_connected_text);
+        contentView.setImageViewResource(R.id.spacingView, -1);
+        contentView.setImageViewResource(R.id.rescanBtn, R.drawable.ic_rescan);
+        contentView.setOnClickPendingIntent(R.layout.layout_notification, pendingSwitchIntent);
+        contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
+        return contentView;
     }
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.webkit.WebView;
 
@@ -22,9 +23,13 @@ public class HomeActivity extends AppCompatActivity {
 
     String webUrl, apiKey;
     LeapSampleSharedPref sharedPref;
-
-    private LeapService leapService;
-    private boolean toShowNotification = false;
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            LeapAUI.init(HomeActivity.this, apiKey);
+            LeapSnapSDK.init(HomeActivity.this, apiKey);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LeapAUI.init(this, apiKey);
-        LeapSnapSDK.init(this, apiKey);
+        runOnUiThread(runnable);
     }
 }

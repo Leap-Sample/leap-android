@@ -5,8 +5,8 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingTop="15dp"
+    android:background="#0A0B12"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/border_notification"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -22,6 +22,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/logoText"
             android:layout_marginLeft="5dp"
             app:srcCompat="@drawable/ic_leap_text" />
     </LinearLayout>
@@ -40,6 +41,7 @@
         android:paddingTop="10dp"
         android:text="Sample App - Kushagra"
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="36dp" />
 
@@ -47,21 +49,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="2dp"
+        android:id="@+id/connected"
+        android:textColor="#8C8C8C"
         app:srcCompat="@drawable/ic_connected_text"/>
 
-    <TextView
+    <ImageView
         android:paddingTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_rescan"
         android:id="@+id/rescanBtn"
-        android:text="Rescan"
-        android:textStyle="bold"
-        android:textColor="#5B6CFF"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:id="@+id/spacingView"
+        android:background="#0A0B12"
+        />
 
 </LinearLayout>
