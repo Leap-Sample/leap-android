@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/surfaceView"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="137dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/ic_group_8"
         android:elevation="10dp" />
 
