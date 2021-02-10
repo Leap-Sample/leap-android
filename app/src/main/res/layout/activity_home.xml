@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_leap_bckg"
-    tools:context=".ui.SplashScrActivity">
+    tools:context=".ui.HomeActivity">
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

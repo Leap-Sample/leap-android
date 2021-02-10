@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">LeapAndroidSample</string>
+    <string name="app_name">Leap</string>
+    <string name="desc_text_scanner"><b>Open your leap dashboard, go to the app\nsettings, and scan the API QR code to connect\nthis sample app with your account</b></string>
+
 </resources>
