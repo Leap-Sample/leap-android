@@ -14,17 +14,17 @@ import is.leap.android.sample.R;
 public class NonScannerFragment extends Fragment {
 
     final NonScanCaptureListener nonScanCaptureListener;
-    private static NonScannerFragment instance;
+    //private static NonScannerFragment instance;
 
     public NonScannerFragment(NonScanCaptureListener nonScanCaptureListener) {
         this.nonScanCaptureListener = nonScanCaptureListener;
     }
-
-    public static NonScannerFragment getInstance(NonScannerFragment.NonScanCaptureListener captureListener) {
-        if (instance == null)
-            instance = new NonScannerFragment(captureListener);
-        return instance;
-    }
+//
+//    public static NonScannerFragment getInstance(NonScannerFragment.NonScanCaptureListener captureListener) {
+//        if (instance == null)
+//            instance = new NonScannerFragment(captureListener);
+//        return instance;
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -61,7 +61,7 @@ public class NonScannerFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        instance = null;
+       // instance = null;
     }
 
     @Override

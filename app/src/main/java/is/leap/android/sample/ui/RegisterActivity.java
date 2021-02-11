@@ -10,24 +10,20 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
 import is.leap.android.snap.LeapSnapSDK;
 
-import static is.leap.android.sample.Constants.DISABLE;
-
 public class RegisterActivity extends AppCompatActivity implements
         ScannerFragment.ScannerListener, NonScannerFragment.NonScanCaptureListener {
 
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-    private Handler handler;
     private final static int MODE_SCANNER = 1;
     private final static int MODE_NON_SCANNER = 2;
     private int modeOfScan = -1;
+    private Fragment currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +31,12 @@ public class RegisterActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_register);
 
         modeOfScan = MODE_SCANNER;
-        getIntents();
-        handler = new Handler(Looper.getMainLooper());
-
+        hidePreviousStates();
         showContainer(modeOfScan);
     }
 
     private void showContainer(int modeOfScan) {
-        Fragment currentFragment = getFragment(modeOfScan);
+        currentFragment = getFragment(modeOfScan);
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.placeholder, currentFragment);
@@ -52,21 +46,17 @@ public class RegisterActivity extends AppCompatActivity implements
     private Fragment getFragment(int modeOfScan) {
         switch (modeOfScan){
             case MODE_SCANNER:
-                return ScannerFragment.getInstance(this);
+                currentFragment = new ScannerFragment(this);
+                break;
 
             case MODE_NON_SCANNER:
-                return NonScannerFragment.getInstance(this);
-
+                currentFragment = new NonScannerFragment(this);
+                break;
         }
-        return null;
+        return currentFragment;
     }
 
-    private void getIntents() {
-        Intent intent = getIntent();
-        boolean shouldDisableLeap = intent.getBooleanExtra(DISABLE, true);
-        if (!shouldDisableLeap){
-            return;
-        }
+    private void hidePreviousStates() {
         hideNotification();
         disableLeap();
     }
@@ -89,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity implements
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                ScannerFragment.getInstance(this).beginScan();
+                if( currentFragment != null ) ((ScannerFragment)currentFragment).beginScan();
                 return;
             }
             showContainer(MODE_NON_SCANNER);
@@ -99,18 +89,6 @@ public class RegisterActivity extends AppCompatActivity implements
     private void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

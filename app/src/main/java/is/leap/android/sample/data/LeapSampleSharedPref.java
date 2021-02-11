@@ -75,38 +75,6 @@ public class LeapSampleSharedPref {
         getEditor().clear().apply();
     }
 
-    private int readInt(String key, int defaultValue) {
-        try {
-            return sharedPreferences.getInt(key, defaultValue);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    private boolean readBoolean(String key, boolean defaultValue) {
-        try {
-            return sharedPreferences.getBoolean(key, defaultValue);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    public long readLong(String key, long defaultValue) {
-        try {
-            return sharedPreferences.getLong(key, defaultValue);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    public float readFloat(String key, float defaultValue) {
-        try {
-            return sharedPreferences.getFloat(key, defaultValue);
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
     private String readString(String key, String defaultValue) {
         try {
             return sharedPreferences.getString(key, defaultValue);
@@ -123,36 +91,12 @@ public class LeapSampleSharedPref {
         return readString(APP_NAME, NOT_AVAILABLE);
     }
 
-    private void setRegisteredApp(String appName){
-        save(APP_NAME, appName);
-    }
-
-    private void setUserName(String userName){
-        save(USER_NAME, userName);
-    }
-
     public String getUserName() {
         return readString(USER_NAME, NOT_AVAILABLE);
     }
 
-    private void setAppApiKey(String appApiKey){
-        save(APP_API_KEY, appApiKey);
-    }
-
     public String getAppApiKey(){
         return readString(APP_API_KEY, NOT_AVAILABLE);
-    }
-
-    private void setPlatformType(String platformType){
-        save(PLATFORM_TYPE, platformType);
-    }
-
-    public String getPlatformType(){
-        return readString(PLATFORM_TYPE, NOT_AVAILABLE);
-    }
-
-    private void setWebUrl(String webUrl){
-        save(WEB_URL, webUrl);
     }
 
     public String getWebUrl(){

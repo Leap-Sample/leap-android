@@ -39,17 +39,17 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private BarcodeDetector barcodeDetector;
     final ScannerListener scannerListener;
-    private static ScannerFragment instance;
+//    private static ScannerFragment instance;
 
     public ScannerFragment(ScannerListener scannerListener) {
         this.scannerListener = scannerListener;
     }
-
-    public static ScannerFragment getInstance(ScannerListener scannerListener) {
-        if (instance == null)
-            instance = new ScannerFragment(scannerListener);
-        return instance;
-    }
+//
+//    public static ScannerFragment getInstance(ScannerListener scannerListener) {
+//        if (instance == null)
+//            instance = new ScannerFragment(scannerListener);
+//        return instance;
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -71,7 +71,6 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_layout_scanner, parent, false);
         leapScannerView = root.findViewById(R.id.surfaceView);
-
         return root;
     }
 
@@ -84,7 +83,6 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     @Override
     public void onDetach() {
         super.onDetach();
-        instance = null;
     }
 
     @Override
@@ -158,19 +156,13 @@ public class ScannerFragment extends Fragment implements ValidationListener {
             LeapSampleSharedPref.getInstance().saveLeapQRConfiguration(config);
             scannerListener.onScanSuccessful();
         } catch (JSONException e) {
-            // e.printStackTrace();
-//            handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
+            //
         }
     }
 
     @Override
     public void onFailedValidation() {
-
+        Toast.makeText(getContext(), "Invalid QR Code", Toast.LENGTH_SHORT).show();
     }
 
     public void beginScan() {

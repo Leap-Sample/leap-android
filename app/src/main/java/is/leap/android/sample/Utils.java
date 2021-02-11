@@ -40,6 +40,7 @@ public class Utils {
             if ( isOwnerLeap(barcodeSparseArray.valueAt(_i), validationListener))
                 return true;
         }
+        if (validationListener != null) validationListener.onFailedValidation();
         return false;
     }
 

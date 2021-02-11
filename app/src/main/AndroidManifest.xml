@@ -31,7 +31,8 @@
 
         <service android:name=".service.LeapService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:stopWithTask="true" />
     </application>
 
 </manifest>

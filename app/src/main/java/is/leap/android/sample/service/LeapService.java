@@ -35,7 +35,7 @@ public class LeapService extends Service {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         startForeground(NOTIFICATION_ID, Utils.getNotification(this.getApplicationContext(), LeapSampleSharedPref.getInstance().getRegisteredApp()));
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Nullable
@@ -54,5 +54,10 @@ public class LeapService extends Service {
         super.onTaskRemoved(rootIntent);
         this.stopSelf();
         this.onDestroy();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -52,7 +52,6 @@ public class SplashScrActivity extends AppCompatActivity {
 
     private void goToHome() {
         Intent transitionToHome = new Intent(this, HomeActivity.class);
-        transitionToHome.putExtra(LeapSampleSharedPref.APP_API_KEY, sampleSharedPref.getAppApiKey());
         startActivity(transitionToHome);
     }
 
