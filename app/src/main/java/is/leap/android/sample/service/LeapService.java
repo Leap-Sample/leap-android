@@ -1,26 +1,12 @@
 package is.leap.android.sample.service;
 
-import android.annotation.TargetApi;
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
-import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
 import is.leap.android.sample.data.LeapSampleSharedPref;
-import is.leap.android.sample.ui.RegisterActivity;
-
-import static is.leap.android.sample.data.LeapSampleSharedPref.APP_NAME;
 
 public class LeapService extends Service {
 
@@ -45,19 +31,10 @@ public class LeapService extends Service {
     }
 
     @Override
-    public boolean stopService(Intent name) {
-        return super.stopService(name);
-    }
-
-    @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         this.stopSelf();
         this.onDestroy();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }

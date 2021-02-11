@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import is.leap.android.sample.listeners.ValidationListener;
+import is.leap.android.sample.ui.HomeActivity;
 import is.leap.android.sample.ui.RegisterActivity;
 
 import static is.leap.android.sample.Constants.DISABLE;
@@ -116,17 +117,10 @@ public class Utils {
 
     public static Notification getNotification(Context context, String applicationName) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder leapNotifyBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "leap_qr_notification");
+        NotificationCompat.Builder leapNotifyBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "leap_notification");
 
-        Intent switchIntent = new Intent(context, RegisterActivity.class);
-        switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_NEW_TASK);
-        switchIntent.putExtra(DISABLE, true);
-        PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
 
-        RemoteViews contentView = getCustomLayout(context, pendingSwitchIntent, applicationName);
+        RemoteViews contentView = getCustomLayout(context, applicationName);
 
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
         leapNotifyBuilder.setContent(contentView);
@@ -137,7 +131,7 @@ public class Utils {
         leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH | Notification.FLAG_AUTO_CANCEL;;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "leap_qr_notification";
+            String channelId = "leap_notification";
             NotificationChannel channel = new NotificationChannel(channelId, "Leap", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
             leapNotifyBuilder.setChannelId(channelId);
@@ -146,7 +140,23 @@ public class Utils {
         return leapNotifyBuilder.build();
     }
 
-    private static RemoteViews getCustomLayout(Context context, PendingIntent pendingSwitchIntent, String applicationName) {
+    private static RemoteViews getCustomLayout(Context context, String applicationName) {
+        Intent switchIntent = new Intent(context, RegisterActivity.class);
+        switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
+        switchIntent.putExtra(DISABLE, true);
+        PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
+
+        Intent homeIntent = new Intent(context, HomeActivity.class);
+        switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
+        switchIntent.putExtra(DISABLE, true);
+        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 0, homeIntent, 0);
+
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
         contentView.setTextViewText(R.id.appNameTitle, applicationName);
         contentView.setImageViewResource(R.id.logo, R.drawable.ic_combined_shape_copy_7);
@@ -154,7 +164,7 @@ public class Utils {
         contentView.setImageViewResource(R.id.connected, R.drawable.ic_connected_text);
         contentView.setImageViewResource(R.id.spacingView, -1);
         contentView.setImageViewResource(R.id.rescanBtn, R.drawable.ic_rescan);
-        contentView.setOnClickPendingIntent(R.layout.layout_notification, pendingSwitchIntent);
+        contentView.setOnClickPendingIntent(R.id.notification_layout, pendingHomeIntent);
         contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
         return contentView;
     }
