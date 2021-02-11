@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import is.leap.android.sample.listeners.ValidationListener;
 
 public class ScannerFragment extends Fragment implements ValidationListener {
 
-    private ScannerView leapScannerView;
+    private SurfaceView leapScannerView;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private BarcodeDetector barcodeDetector;
@@ -100,7 +101,7 @@ public class ScannerFragment extends Fragment implements ValidationListener {
 
     private void initialiseSources() {
 
-        Toast.makeText(getContext().getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
 
         leapScannerView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
