@@ -44,7 +44,7 @@ public class NonScannerFragment extends Fragment {
         captureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (nonScanCaptureListener != null) nonScanCaptureListener.onCapture();
+                if (nonScanCaptureListener != null) nonScanCaptureListener.onCameraOpened();
             }
         });
         return root;
@@ -61,6 +61,7 @@ public class NonScannerFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        instance = null;
     }
 
     @Override
@@ -69,6 +70,6 @@ public class NonScannerFragment extends Fragment {
     }
 
     public interface NonScanCaptureListener{
-        void onCapture();
+        void onCameraOpened();
     }
 }

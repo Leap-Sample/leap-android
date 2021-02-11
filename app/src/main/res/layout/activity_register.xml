@@ -5,6 +5,7 @@
     android:id="@+id/scannerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0A0B12"
     android:layout_gravity="center"
     tools:context=".ui.RegisterActivity">
 

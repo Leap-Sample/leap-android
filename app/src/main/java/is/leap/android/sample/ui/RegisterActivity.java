@@ -7,36 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
-import android.view.SurfaceHolder;
-import android.widget.Toast;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
-import is.leap.android.sample.custom.BarCodeProcessor;
-import is.leap.android.sample.custom.ScannerView;
-import is.leap.android.sample.data.LeapSampleSharedPref;
-import is.leap.android.sample.listeners.ValidationListener;
-import is.leap.android.sample.service.LeapService;
-import is.leap.android.snap.LeapSnapSDK;
 
 import static is.leap.android.sample.Constants.DISABLE;
 
@@ -145,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCapture() {
+    public void onCameraOpened() {
         showContainer(MODE_SCANNER);
     }
 }

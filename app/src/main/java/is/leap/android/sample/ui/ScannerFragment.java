@@ -83,6 +83,7 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        instance = null;
     }
 
     @Override
@@ -173,11 +174,11 @@ public class ScannerFragment extends Fragment implements ValidationListener {
 
     public void beginScan() {
         try {
-            if (cameraSource == null) {
-                initialiseCamera();
-            }
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 return;
+            }
+            if (cameraSource == null) {
+                initialiseCamera();
             }
             cameraSource.start(leapScannerView.getHolder());
 

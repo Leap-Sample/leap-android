@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
 
     String webUrl, apiKey;
     LeapSampleSharedPref sharedPref;
+    WebView appWebView;
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -40,14 +42,20 @@ public class HomeActivity extends AppCompatActivity {
         apiKey = sharedPref.getAppApiKey();
         triggerService();
 
-        WebView appWebView = findViewById(R.id.webView);
+        appWebView = findViewById(R.id.webView);
+        appWebView.getSettings().setJavaScriptEnabled(true);
+        appWebView.setWebViewClient(new WebViewClient());
         LeapAUI.addWebInterface(appWebView);
         appWebView.loadUrl(webUrl);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(appWebView.canGoBack()){
+            appWebView.goBack();
+            super.onBackPressed();
+            return;
+        }
         stopRunningService();
         finish();
     }
