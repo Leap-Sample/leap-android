@@ -25,22 +25,18 @@ public class HomeActivity extends AppCompatActivity {
     String webUrl, apiKey;
     LeapSampleSharedPref sharedPref;
     WebView appWebView;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            LeapAUI.init(HomeActivity.this, apiKey);
-            LeapSnapSDK.init(HomeActivity.this, apiKey);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        triggerService();
         sharedPref = LeapSampleSharedPref.getInstance();
         webUrl = sharedPref.getWebUrl();
         apiKey = sharedPref.getAppApiKey();
-        triggerService();
+
+        LeapAUI.init(HomeActivity.this, apiKey);
+        LeapSnapSDK.init(HomeActivity.this, apiKey);
 
         appWebView = findViewById(R.id.webView);
         appWebView.getSettings().setJavaScriptEnabled(true);
@@ -53,9 +49,9 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(appWebView.canGoBack()){
             appWebView.goBack();
-            super.onBackPressed();
             return;
         }
+        super.onBackPressed();
         stopRunningService();
         finish();
     }
@@ -83,6 +79,5 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        runOnUiThread(runnable);
     }
 }

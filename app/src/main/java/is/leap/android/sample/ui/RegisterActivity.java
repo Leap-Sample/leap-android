@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
+import is.leap.android.snap.LeapSnapSDK;
 
 import static is.leap.android.sample.Constants.DISABLE;
 
@@ -70,8 +72,8 @@ public class RegisterActivity extends AppCompatActivity implements
     }
 
     private void disableLeap() {
-//        LeapAUI.terminate();
-//        LeapSnapSDK.terminate();
+        LeapAUI.terminate();
+        LeapSnapSDK.terminate();
     }
 
     private void hideNotification() {
