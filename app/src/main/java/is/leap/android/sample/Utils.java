@@ -73,30 +73,7 @@ public class Utils {
     @TargetApi(Build.VERSION_CODES.M)
     public static int getScreenHeight(Activity activity) {
         if (activity == null) return 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            return getWindowHeightAPI23Plus(activity);
-        return getWindowHeightLollipop(activity);
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private static int getWindowHeightAPI23Plus(@NonNull Activity activity) {
-        View decorView = activity.getWindow().getDecorView();
-        return decorView.getHeight();
-    }
-
-    private static int getWindowHeightLollipop(@NonNull Activity activity) {
-        // getDisplaySizeY - works correctly expect for landscape due to a bug.
-        if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            return getWindowVisibleDisplayFrame(activity).height();
-        //  getWindowVisibleDisplayFrame - Doesn't work for portrait as it subtracts the keyboard height.
         return getDisplaySizeY(activity);
-    }
-
-    private static @NonNull
-    Rect getWindowVisibleDisplayFrame(@NonNull Activity activity) {
-        Rect rect = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        return rect;
     }
 
     private static int getDisplaySizeY(@NonNull Activity activity) {

@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import is.leap.android.sample.R;
+import is.leap.android.sample.Utils;
 import is.leap.android.sample.custom.BarCodeProcessor;
 import is.leap.android.sample.custom.ScannerView;
 import is.leap.android.sample.data.LeapSampleSharedPref;
@@ -44,12 +45,6 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     public ScannerFragment(ScannerListener scannerListener) {
         this.scannerListener = scannerListener;
     }
-//
-//    public static ScannerFragment getInstance(ScannerListener scannerListener) {
-//        if (instance == null)
-//            instance = new ScannerFragment(scannerListener);
-//        return instance;
-//    }
 
     @Override
     public void onAttach(Context context) {
@@ -135,8 +130,12 @@ public class ScannerFragment extends Fragment implements ValidationListener {
 
     private void initialiseCamera() {
         if (cameraSource != null) return;
+        int screenHeight = Utils.getScreenHeight(getActivity());
+        int screenWidth = Utils.getScreenWidth(getActivity());
+        float aspectRatio = screenHeight/screenWidth;
+        int adjustedHeight = (int)(aspectRatio * screenWidth);
         cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(1920, 1080)
+                .setRequestedPreviewSize(adjustedHeight, screenWidth)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
     }
