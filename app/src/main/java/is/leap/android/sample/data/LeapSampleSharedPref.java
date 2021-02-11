@@ -113,9 +113,8 @@ public class LeapSampleSharedPref {
         if (webUrl == null || webUrl.isEmpty()){
             throw new JSONException("Web Url cant be null or empty");
         }
-        if (!webUrl.startsWith(HTTP) || !webUrl.startsWith(HTTPS)){
-           // throw new JSONException(" Invalid web url ");
-            webUrl = "https://jiny.io/leap_sample_app/index";
+        if (!(webUrl.startsWith(HTTP) || webUrl.startsWith(HTTPS))){
+            throw new JSONException(" Invalid web url ");
         }
 
         save(APP_NAME, appName);

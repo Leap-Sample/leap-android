@@ -124,7 +124,7 @@ public class Utils {
 
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
         leapNotifyBuilder.setContent(contentView);
-        leapNotifyBuilder.setAutoCancel(true); //dismissed when tapped automatically
+        leapNotifyBuilder.setAutoCancel(false); //dismissed when tapped automatically
         leapNotifyBuilder.setOngoing(false);
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
@@ -150,11 +150,11 @@ public class Utils {
         PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
 
         Intent homeIntent = new Intent(context, HomeActivity.class);
-        switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
-        switchIntent.putExtra(DISABLE, true);
+        homeIntent.putExtra(DISABLE, false);
         PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 0, homeIntent, 0);
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
@@ -171,6 +171,5 @@ public class Utils {
 
     public static void hideNotification(Context context, boolean disappearNotification) {
         showNotification(context, null, disappearNotification);
-
     }
 }
