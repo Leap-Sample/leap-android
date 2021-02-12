@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
 import is.leap.android.sample.custom.BarCodeProcessor;
-import is.leap.android.sample.custom.ScannerView;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.listeners.ValidationListener;
 
@@ -40,22 +38,23 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private BarcodeDetector barcodeDetector;
     final ScannerListener scannerListener;
-//    private static ScannerFragment instance;
+    private Activity activity;
 
     public ScannerFragment(ScannerListener scannerListener) {
         this.scannerListener = scannerListener;
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        this.activity = (Activity) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Set to only parse QR code, NOT-BAR-CODE!
-        barcodeDetector = new BarcodeDetector.Builder(getContext())
+        barcodeDetector = new BarcodeDetector.Builder(activity)
                 .setBarcodeFormats(Barcode.QR_CODE) //Set to only parse QR code, NOT-BAR-CODE!
                 .build();
 
@@ -69,20 +68,11 @@ public class ScannerFragment extends Fragment implements ValidationListener {
         return root;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
 
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        this.activity = null;
     }
 
     @Override
@@ -93,36 +83,34 @@ public class ScannerFragment extends Fragment implements ValidationListener {
     }
 
     private void initialiseSources() {
+        leapScannerView.getHolder()
+                .addCallback(new SurfaceHolder.Callback() {
+                    @Override
+                    public void surfaceCreated(SurfaceHolder holder) {
+                        // draw bounds
+                        try {
+                            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                                    == PackageManager.PERMISSION_GRANTED) {
+                                if (cameraSource != null)
+                                    cameraSource.start(leapScannerView.getHolder());
+                            } else {
+                                ActivityCompat.requestPermissions(activity, new
+                                        String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                            }
 
-        Toast.makeText(getContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
-        leapScannerView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                // draw bounds
-                try {
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                        if (cameraSource != null) cameraSource.start(leapScannerView.getHolder());
-
-                    } else {
-                        ActivityCompat.requestPermissions(getActivity(), new
-                                String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                        } catch (IOException ignored) {
+                        }
                     }
 
-                } catch (IOException e) {
-                    // e.printStackTrace();
-                }
-            }
+                    @Override
+                    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                    }
 
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                if (cameraSource != null) cameraSource.stop();
-            }
-        });
+                    @Override
+                    public void surfaceDestroyed(SurfaceHolder holder) {
+                        if (cameraSource != null) cameraSource.stop();
+                    }
+                });
 
         barcodeDetector.setProcessor(new BarCodeProcessor(this));
     }
@@ -130,12 +118,12 @@ public class ScannerFragment extends Fragment implements ValidationListener {
 
     private void initialiseCamera() {
         if (cameraSource != null) return;
-        int screenHeight = Utils.getScreenHeight(getActivity());
-        int screenWidth = Utils.getScreenWidth(getActivity());
-        float aspectRatio = screenHeight/screenWidth;
-        int adjustedHeight = (int)(aspectRatio * screenWidth);
-        cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(adjustedHeight, screenWidth)
+
+        int screenHeight = Utils.getScreenHeight(activity);
+        int screenWidth = Utils.getScreenWidth(activity);
+
+        cameraSource = new CameraSource.Builder(activity, barcodeDetector)
+                .setRequestedPreviewSize(screenWidth, screenHeight)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
     }
@@ -166,20 +154,21 @@ public class ScannerFragment extends Fragment implements ValidationListener {
 
     public void beginScan() {
         try {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED)
                 return;
-            }
-            if (cameraSource == null) {
+            if (cameraSource == null)
                 initialiseCamera();
-            }
             cameraSource.start(leapScannerView.getHolder());
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
+
         }
     }
-    public interface ScannerListener{
+
+    public interface ScannerListener {
         void onScanSuccessful();
+
         void onScanFailed();
     }
 }
