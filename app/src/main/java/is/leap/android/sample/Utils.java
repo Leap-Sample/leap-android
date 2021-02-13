@@ -127,12 +127,11 @@ public class Utils {
         PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
 
         Intent homeIntent = new Intent(context, HomeActivity.class);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                        | Intent.FLAG_ACTIVITY_NEW_TASK);
         homeIntent.putExtra(DISABLE, false);
-        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 0, homeIntent, 0);
+        //Request Code should be Non-Zero
+        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 10101, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
         contentView.setTextViewText(R.id.appNameTitle, applicationName);

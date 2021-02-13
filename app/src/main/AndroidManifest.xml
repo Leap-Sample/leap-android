@@ -18,11 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LeapAndroidSample">
         <activity android:name=".ui.HomeActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".ui.RegisterActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.SplashScrActivity">
+
+        <activity android:name=".ui.RegisterActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.SplashScrActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

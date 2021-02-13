@@ -30,11 +30,17 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        /*
+        Start the service
+         */
         triggerService();
         sharedPref = LeapSampleSharedPref.getInstance();
         webUrl = sharedPref.getWebUrl();
         apiKey = sharedPref.getAppApiKey();
 
+        /*
+        Initialise the SDKs
+         */
         LeapAUI.init(HomeActivity.this, apiKey);
         LeapSnapSDK.init(HomeActivity.this, apiKey);
 
@@ -71,13 +77,4 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }
