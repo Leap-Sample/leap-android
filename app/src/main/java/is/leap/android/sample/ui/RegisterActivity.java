@@ -101,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements
     @Override
     public void onScanSuccessful() {
         openHomeActivity();
-        finishAndRemoveTask();
+        finish();
     }
 
     @Override
