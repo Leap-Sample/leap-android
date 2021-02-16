@@ -1,5 +1,6 @@
 package is.leap.android.sample.ui;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
@@ -28,6 +31,16 @@ public class HomeActivity extends AppCompatActivity {
         Start the service
          */
         triggerService();
+        initLeap();
+
+        appWebView = findViewById(R.id.webView);
+        appWebView.getSettings().setJavaScriptEnabled(true);
+        appWebView.setWebViewClient(new WebViewClient());
+        appWebView.loadUrl(webUrl);
+        LeapAUI.addWebInterface(appWebView);
+    }
+
+    private void initLeap() {
         sharedPref = LeapSampleSharedPref.getInstance();
         webUrl = sharedPref.getWebUrl();
         apiKey = sharedPref.getAppApiKey();
@@ -41,24 +54,21 @@ public class HomeActivity extends AppCompatActivity {
         LeapSnapSDK.withBuilder(HomeActivity.this, apiKey)
                 .setDebugModeEnabled(true)
                 .init();
-
-        appWebView = findViewById(R.id.webView);
-        appWebView.getSettings().setJavaScriptEnabled(true);
-        appWebView.setWebViewClient(new WebViewClient());
-        LeapAUI.addWebInterface(appWebView);
-        appWebView.loadUrl(webUrl);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         triggerService();
+        initLeap();
+        LeapAUI.addWebInterface(appWebView);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, LeapService.class));
+        LeapAUI.terminate();
+        LeapSnapSDK.terminate();
     }
 
     private void exitAndKillApp() {
