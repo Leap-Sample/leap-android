@@ -1,21 +1,15 @@
 package is.leap.android.sample.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
-import is.leap.android.sample.Utils;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.service.LeapService;
 import is.leap.android.snap.LeapSnapSDK;
@@ -41,8 +35,12 @@ public class HomeActivity extends AppCompatActivity {
         /*
         Initialise the SDKs
          */
-        LeapAUI.init(HomeActivity.this, apiKey);
-        LeapSnapSDK.init(HomeActivity.this, apiKey);
+        LeapAUI.withBuilder(HomeActivity.this, apiKey)
+                .setDebugModeEnabled(true)
+                .init();
+        LeapSnapSDK.withBuilder(HomeActivity.this, apiKey)
+                .setDebugModeEnabled(true)
+                .init();
 
         appWebView = findViewById(R.id.webView);
         appWebView.getSettings().setJavaScriptEnabled(true);
@@ -52,19 +50,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        triggerService();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, LeapService.class));
+    }
+
+    private void exitAndKillApp() {
+        finishAndRemoveTask();
+        System.exit(0);
+    }
+
+    @Override
     public void onBackPressed() {
         if(appWebView.canGoBack()){
             appWebView.goBack();
             return;
         }
         super.onBackPressed();
-        stopRunningService();
-        finish();
-    }
-
-    private void stopRunningService() {
-        Intent intent = new Intent(this, LeapService.class);
-        stopService(intent);
+        exitAndKillApp();
     }
 
     private void triggerService() {

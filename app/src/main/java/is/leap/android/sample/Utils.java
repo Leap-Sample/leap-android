@@ -8,12 +8,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.SparseArray;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -28,17 +26,18 @@ import is.leap.android.sample.listeners.ValidationListener;
 import is.leap.android.sample.ui.HomeActivity;
 import is.leap.android.sample.ui.RegisterActivity;
 
-import static is.leap.android.sample.Constants.DISABLE;
 import static is.leap.android.sample.Constants.LEAP;
 import static is.leap.android.sample.Constants.NOTIFICATION_ID;
 import static is.leap.android.sample.Constants.OWNER;
 
 public class Utils {
 
+    public static final int RESCAN_PADDING_DP = 15;
+
     public static boolean isLeapValidatedApp(SparseArray<Barcode> barcodeSparseArray, ValidationListener validationListener) throws JSONException {
-        if( barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;
-        for( int _i = 0; _i < barcodeSparseArray.size(); _i++){
-            if ( isOwnerLeap(barcodeSparseArray.valueAt(_i), validationListener))
+        if (barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;
+        for (int _i = 0; _i < barcodeSparseArray.size(); _i++) {
+            if (isOwnerLeap(barcodeSparseArray.valueAt(_i), validationListener))
                 return true;
         }
         if (validationListener != null) validationListener.onFailedValidation();
@@ -46,11 +45,12 @@ public class Utils {
     }
 
     private static boolean isOwnerLeap(Barcode barcodeAtValue, ValidationListener validationListener) throws JSONException {
-        if (barcodeAtValue == null || barcodeAtValue.displayValue == null || barcodeAtValue.displayValue.isEmpty() ) return false;
+        if (barcodeAtValue == null || barcodeAtValue.displayValue == null || barcodeAtValue.displayValue.isEmpty())
+            return false;
         JSONObject configuration = new JSONObject(barcodeAtValue.displayValue);
         if (configuration == null || configuration.length() == 0) return false;
         boolean isOwnerLeap = LEAP.equals(configuration.optString(OWNER));
-        if( !isOwnerLeap ){
+        if (!isOwnerLeap) {
             return false;
         }
         if (validationListener != null) validationListener.onSuccessfulValidation(configuration);
@@ -85,7 +85,7 @@ public class Utils {
     public static void showNotification(Context context, String applicationName, boolean hideNotification) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if( hideNotification ){
+        if (hideNotification) {
             notificationManager.cancel(NOTIFICATION_ID);
             return;
         }
@@ -98,14 +98,15 @@ public class Utils {
 
 
         RemoteViews contentView = getCustomLayout(context, applicationName);
+        leapNotifyBuilder.setSmallIcon(R.drawable.ic_leap_logo);
+        leapNotifyBuilder.setTicker("leap");
 
-        leapNotifyBuilder.setSmallIcon(R.drawable.ic_combined_shape_copy_7);
-        leapNotifyBuilder.setContent(contentView);
+        leapNotifyBuilder.setCustomContentView(contentView);
+        leapNotifyBuilder.setCustomBigContentView(contentView);
         leapNotifyBuilder.setAutoCancel(false); //dismissed when tapped automatically
         leapNotifyBuilder.setOngoing(false);
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
-        leapNotifyBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH | Notification.FLAG_AUTO_CANCEL;;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "leap_notification";
@@ -113,33 +114,33 @@ public class Utils {
             notificationManager.createNotificationChannel(channel);
             leapNotifyBuilder.setChannelId(channelId);
         }
-
         return leapNotifyBuilder.build();
     }
 
-    private static RemoteViews getCustomLayout(Context context, String applicationName) {
+    private static PendingIntent getRescanPendingIntent(Context context) {
         Intent switchIntent = new Intent(context, RegisterActivity.class);
         switchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
-        switchIntent.putExtra(DISABLE, true);
-        PendingIntent pendingSwitchIntent = PendingIntent.getActivity(context, 0, switchIntent, 0);
+        return PendingIntent.getActivity(context, 10100, switchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public static float dpToPx(Context context, float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
+
+    private static RemoteViews getCustomLayout(Context context, String applicationName) {
+        PendingIntent pendingSwitchIntent = getRescanPendingIntent(context);
 
         Intent homeIntent = new Intent(context, HomeActivity.class);
-//        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-//                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-        homeIntent.putExtra(DISABLE, false);
-        //Request Code should be Non-Zero
-        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 10101, homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 10101,
+                homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
         contentView.setTextViewText(R.id.appNameTitle, applicationName);
-        contentView.setImageViewResource(R.id.logo, R.drawable.ic_combined_shape_copy_7);
-        contentView.setImageViewResource(R.id.logoText, R.drawable.ic_leap_text);
-        contentView.setImageViewResource(R.id.connected, R.drawable.ic_connected_text);
-        contentView.setImageViewResource(R.id.spacingView, -1);
-        contentView.setImageViewResource(R.id.rescanBtn, R.drawable.ic_rescan);
+        int padding = (int) dpToPx(context, RESCAN_PADDING_DP);
+        contentView.setViewPadding(R.id.rescanBtn, 0, padding, padding, padding);
         contentView.setOnClickPendingIntent(R.id.notification_layout, pendingHomeIntent);
         contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
         return contentView;

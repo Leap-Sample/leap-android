@@ -14,6 +14,7 @@ import android.os.Bundle;
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
+import is.leap.android.sample.service.LeapService;
 import is.leap.android.snap.LeapSnapSDK;
 
 public class RegisterActivity extends AppCompatActivity implements
@@ -24,6 +25,12 @@ public class RegisterActivity extends AppCompatActivity implements
     private final static int MODE_NON_SCANNER = 2;
     private int modeOfScan = -1;
     private Fragment currentFragment = null;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        stopService(new Intent(this, LeapService.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements
     @Override
     public void onScanSuccessful() {
         openHomeActivity();
-        finish();
+        finishAndRemoveTask();
     }
 
     @Override

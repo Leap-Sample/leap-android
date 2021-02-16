@@ -9,45 +9,49 @@
 
 
     <ImageView
+        android:id="@+id/mainLLogo"
         android:layout_width="52dp"
         android:layout_height="45dp"
-        android:layout_marginTop="304dp"
-        android:id="@+id/mainLLogo"
         android:layout_centerInParent="true"
-        app:srcCompat="@drawable/ic_combined_shape_copy_7" />
+        android:layout_marginTop="304dp"
+        app:srcCompat="@drawable/ic_leap_logo" />
 
 
-    <ImageView
-        android:layout_width="113dp"
-        android:layout_height="36dp"
+    <TextView
         android:id="@+id/sample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/mainLLogo"
         android:layout_centerInParent="true"
-        app:srcCompat="@drawable/ic_sample" />
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/poppins_medium"
+        android:letterSpacing="0.53"
+        android:text="SAMPLE"
+        android:textColor="@android:color/white" />
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true">
-    <ImageView
-        android:id="@+id/smallLogo"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginBottom="34dp"
-        app:srcCompat="@drawable/ic_combined_shape_copy_7" />
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="66dp"
-        android:layout_height="37dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="215dp"
-        app:srcCompat="@drawable/ic_leap_text" />
+        <ImageView
+            android:id="@+id/smallLogo"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="220dp"
+            android:layout_marginBottom="34dp"
+            app:srcCompat="@drawable/ic_leap_logo" />
+
+        <ImageView
+            android:layout_width="66dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="215dp"
+            app:srcCompat="@drawable/ic_leap_text" />
     </LinearLayout>
-
 
 
 </RelativeLayout>

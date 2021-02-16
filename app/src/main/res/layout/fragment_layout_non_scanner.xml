@@ -14,9 +14,10 @@
         android:background="@drawable/corner_background"
         android:paddingLeft="26dp"
         android:paddingRight="26dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="Open camera"
         android:textAllCaps="false"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <ImageView
         android:layout_width="wrap_content"

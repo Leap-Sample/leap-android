@@ -1,73 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="15dp"
-    android:background="#0A0B12"
     android:id="@+id/notification_layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0A0B12"
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="25dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="13dp"
-            android:layout_height="11dp"
-            android:id="@+id/logo"
-            app:srcCompat="@drawable/ic_combined_shape_copy_7" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/logoText"
-            android:layout_marginLeft="5dp"
-            app:srcCompat="@drawable/ic_leap_text" />
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="13dp"
+                android:layout_height="11dp"
+                android:src="@drawable/ic_leap_logo" />
+
+            <TextView
+                android:id="@+id/logoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="leap"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/appNameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:paddingTop="10dp"
+            android:text="Sample App - Kushagra"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="36dp" />
+
+        <TextView
+            android:id="@+id/connected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingTop="2dp"
+            android:text="Connected"
+            android:textColor="#8C8C8C" />
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </LinearLayout>
-
 
     <TextView
-        android:id="@+id/appNameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="Sample App - Kushagra"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="36dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="2dp"
-        android:id="@+id/connected"
-        android:textColor="#8C8C8C"
-        app:srcCompat="@drawable/ic_connected_text"/>
-
-    <ImageView
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_rescan"
         android:id="@+id/rescanBtn"
-        />
-
-    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:id="@+id/spacingView"
-        android:background="#0A0B12"
-        />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_semibold"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Rescan"
+        android:textColor="#5B6CFF"
+        android:textSize="14sp" />
 
 </LinearLayout>

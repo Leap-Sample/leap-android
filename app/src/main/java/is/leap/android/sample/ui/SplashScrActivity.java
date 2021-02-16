@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleSharedPref;
@@ -16,6 +15,7 @@ public class SplashScrActivity extends AppCompatActivity {
     Handler handler;
     Runnable transitionRunnable = this::transitionActivity;
     private static final int TIME_OUT = 2000;
+    private boolean splashLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,11 @@ public class SplashScrActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(splashLoaded) {
+            transitionActivity();
+            return;
+        }
+        splashLoaded = true;
         beginTransition();
     }
 
