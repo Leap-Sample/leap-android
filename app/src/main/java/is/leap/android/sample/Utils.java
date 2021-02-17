@@ -101,6 +101,7 @@ public class Utils {
         leapNotifyBuilder.setSmallIcon(R.drawable.ic_leap_logo);
         leapNotifyBuilder.setTicker("leap");
 
+        leapNotifyBuilder.setContent(contentView);
         leapNotifyBuilder.setCustomContentView(contentView);
         leapNotifyBuilder.setCustomBigContentView(contentView);
         leapNotifyBuilder.setAutoCancel(false); //dismissed when tapped automatically

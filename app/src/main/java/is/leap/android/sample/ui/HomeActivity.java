@@ -1,15 +1,11 @@
 package is.leap.android.sample.ui;
 
-import android.app.ActivityManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
 
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
@@ -67,8 +63,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeapAUI.terminate();
-        LeapSnapSDK.terminate();
+        LeapAUI.disable();
+        LeapSnapSDK.disable();
     }
 
     private void exitAndKillApp() {
@@ -78,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(appWebView.canGoBack()){
+        if (appWebView.canGoBack()) {
             appWebView.goBack();
             return;
         }
@@ -88,12 +84,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void triggerService() {
         Intent intent = new Intent(this, LeapService.class);
-        intent.putExtra("appName", LeapSampleSharedPref.getInstance().getRegisteredApp());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        }else{
-            startService(intent);
-        }
+        intent.setAction(LeapService.START_FOREGROUND_SERVICE);
+        startService(intent);
     }
 
 }
