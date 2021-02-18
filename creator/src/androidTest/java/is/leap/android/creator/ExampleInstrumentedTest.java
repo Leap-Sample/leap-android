@@ -1,4 +1,4 @@
-package is.leap.android.snap;
+package is.leap.android.creator;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("is.leap.android.snap.test", appContext.getPackageName());
+        assertEquals("is.leap.android.creator.test", appContext.getPackageName());
     }
 }

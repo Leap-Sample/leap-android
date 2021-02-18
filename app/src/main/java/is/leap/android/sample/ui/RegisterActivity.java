@@ -15,7 +15,7 @@ import is.leap.android.aui.LeapAUI;
 import is.leap.android.sample.R;
 import is.leap.android.sample.Utils;
 import is.leap.android.sample.service.LeapService;
-import is.leap.android.snap.LeapSnapSDK;
+import is.leap.android.creator.LeapCreator;
 
 public class RegisterActivity extends AppCompatActivity implements
         ScannerFragment.ScannerListener, NonScannerFragment.NonScanCaptureListener {
@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements
 
     private void disableLeap() {
         LeapAUI.terminate();
-        LeapSnapSDK.terminate();
+        LeapCreator.terminate();
     }
 
     private void hideNotification() {

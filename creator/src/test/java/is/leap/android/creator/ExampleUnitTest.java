@@ -1,4 +1,4 @@
-package is.leap.android.snap;
+package is.leap.android.creator;
 
 import org.junit.Test;
 

@@ -1,5 +1,5 @@
 include ':core'
-include ':snap'
+include ':creator'
 include ':aui'
 include ':app'
 rootProject.name = "LeapAndroidSample"

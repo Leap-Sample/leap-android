@@ -8,10 +8,10 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.aui.LeapAUI;
+import is.leap.android.creator.LeapCreator;
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.service.LeapService;
-import is.leap.android.snap.LeapSnapSDK;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         LeapAUI.withBuilder(HomeActivity.this, apiKey)
                 .setDebugModeEnabled(true)
                 .init();
-        LeapSnapSDK.withBuilder(HomeActivity.this, apiKey)
+        LeapCreator.withBuilder(HomeActivity.this, apiKey)
                 .setDebugModeEnabled(true)
                 .init();
     }
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LeapAUI.disable();
-        LeapSnapSDK.disable();
+        LeapCreator.disable();
     }
 
     private void exitAndKillApp() {
