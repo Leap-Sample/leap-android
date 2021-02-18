@@ -8,14 +8,16 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.text.Spanned;
 import android.util.SparseArray;
-import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -32,7 +34,9 @@ import static is.leap.android.sample.Constants.OWNER;
 
 public class Utils {
 
-    public static final int RESCAN_PADDING_DP = 15;
+    public static final String NOTIFICATION_BG_COLOR = "#0A0B12";
+    public static final String CONNECTED = "Connected";
+    public static final String TICKER_TEXT_LEAP = "LeapSample";
 
     public static boolean isLeapValidatedApp(SparseArray<Barcode> barcodeSparseArray, ValidationListener validationListener) throws JSONException {
         if (barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;
@@ -97,17 +101,30 @@ public class Utils {
         NotificationCompat.Builder leapNotifyBuilder = new NotificationCompat.Builder(context.getApplicationContext(), "leap_notification");
 
 
-        RemoteViews contentView = getCustomLayout(context, applicationName);
-        leapNotifyBuilder.setSmallIcon(R.drawable.ic_leap_logo);
-        leapNotifyBuilder.setTicker("leap");
+        PendingIntent rescanPendingIntent = getRescanPendingIntent(context);
 
-        leapNotifyBuilder.setContent(contentView);
-        leapNotifyBuilder.setCustomContentView(contentView);
-        leapNotifyBuilder.setCustomBigContentView(contentView);
+        leapNotifyBuilder.setSmallIcon(R.drawable.ic_leap_logo);
+        leapNotifyBuilder.setContentTitle(applicationName);
+        leapNotifyBuilder.setContentText(CONNECTED);
+        leapNotifyBuilder.setTicker(TICKER_TEXT_LEAP);
+        leapNotifyBuilder.setColor(Color.parseColor(NOTIFICATION_BG_COLOR));
+        leapNotifyBuilder.setColorized(true);
+        Spanned actionText = HtmlCompat.fromHtml("<font color=\"#5B6CFF\">" + "<b>Rescan</b>" + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
+        leapNotifyBuilder.addAction(new NotificationCompat.Action.Builder(
+                0, // Don't show icon
+                actionText,
+                rescanPendingIntent).build());
+
         leapNotifyBuilder.setAutoCancel(false); //dismissed when tapped automatically
         leapNotifyBuilder.setOngoing(false);
         leapNotifyBuilder.setPriority(Notification.PRIORITY_HIGH);
         leapNotifyBuilder.setOnlyAlertOnce(true);
+
+        Intent homeIntent = new Intent(context, HomeActivity.class);
+        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 10101,
+                homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        leapNotifyBuilder.setContentIntent(pendingHomeIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "leap_notification";
@@ -125,26 +142,6 @@ public class Utils {
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(context, 10100, switchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public static float dpToPx(Context context, float dp) {
-        return dp * context.getResources().getDisplayMetrics().density;
-    }
-
-    private static RemoteViews getCustomLayout(Context context, String applicationName) {
-        PendingIntent pendingSwitchIntent = getRescanPendingIntent(context);
-
-        Intent homeIntent = new Intent(context, HomeActivity.class);
-        PendingIntent pendingHomeIntent = PendingIntent.getActivity(context, 10101,
-                homeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.layout_notification);
-        contentView.setTextViewText(R.id.appNameTitle, applicationName);
-        int padding = (int) dpToPx(context, RESCAN_PADDING_DP);
-        contentView.setViewPadding(R.id.rescanBtn, 0, padding, padding, padding);
-        contentView.setOnClickPendingIntent(R.id.notification_layout, pendingHomeIntent);
-        contentView.setOnClickPendingIntent(R.id.rescanBtn, pendingSwitchIntent);
-        return contentView;
     }
 
     public static void hideNotification(Context context, boolean disappearNotification) {
