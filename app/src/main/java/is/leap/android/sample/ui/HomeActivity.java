@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         appWebView.getSettings().setJavaScriptEnabled(true);
         appWebView.setWebViewClient(new WebViewClient());
         appWebView.loadUrl(webUrl);
-        LeapAUI.addWebInterface(appWebView);
+        LeapAUI.enableWeb(appWebView);
     }
 
     private void initLeap() {
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         triggerService();
         initLeap();
-        LeapAUI.addWebInterface(appWebView);
+        LeapAUI.enableWeb(appWebView);
     }
 
     @Override
