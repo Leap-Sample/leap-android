@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -37,6 +38,11 @@ public class Utils {
     public static final String NOTIFICATION_BG_COLOR = "#0A0B12";
     public static final String CONNECTED = "Connected";
     public static final String TICKER_TEXT_LEAP = "LeapSample";
+
+
+    public static boolean isNotReleaseBuild(Context context) {
+        return (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+    }
 
     public static boolean isLeapValidatedApp(SparseArray<Barcode> barcodeSparseArray, ValidationListener validationListener) throws JSONException {
         if (barcodeSparseArray == null || barcodeSparseArray.size() == 0) return false;

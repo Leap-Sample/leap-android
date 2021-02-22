@@ -19,5 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontwarn is.leap.android.**
--keep class is.leap.android.** {*;}
+-dontwarn is.leap.android.aui**
+-dontwarn is.leap.android.core**
+-dontwarn is.leap.android.creator**
+-keep class is.leap.android.aui** {*;}
+-keep class is.leap.android.core** {*;}
+-keep class is.leap.android.creator** {*;}

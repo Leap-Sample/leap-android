@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import is.leap.android.aui.LeapAUI;
 import is.leap.android.creator.LeapCreator;
 import is.leap.android.sample.R;
+import is.leap.android.sample.Utils;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.service.LeapService;
 
@@ -44,11 +45,12 @@ public class HomeActivity extends AppCompatActivity {
         /*
         Initialise the SDKs
          */
+        boolean isDebuggable = Utils.isNotReleaseBuild(this);
         LeapAUI.withBuilder(HomeActivity.this, apiKey)
-                .setDebugModeEnabled(true)
+                .setDebugModeEnabled(isDebuggable)
                 .init();
         LeapCreator.withBuilder(HomeActivity.this, apiKey)
-                .setDebugModeEnabled(true)
+                .setDebugModeEnabled(isDebuggable)
                 .init();
     }
 
