@@ -71,7 +71,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void exitAndKillApp() {
         finishAndRemoveTask();
-        System.exit(0);
     }
 
     @Override
