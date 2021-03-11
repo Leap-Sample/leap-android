@@ -19,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.LeapAndroidSample">
+        <meta-data
+            android:name="leap_api_key"
+            android:value="9ad56a46-e81e-42bf-a3c6-94af75dbb88f"/>
         <activity android:name=".ui.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>

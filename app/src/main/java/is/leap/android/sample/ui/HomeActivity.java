@@ -46,20 +46,16 @@ public class HomeActivity extends AppCompatActivity {
         Initialise the SDKs
          */
         boolean isDebuggable = Utils.isNotReleaseBuild(this);
-        LeapAUI.withBuilder(HomeActivity.this, apiKey)
-                .setDebugModeEnabled(isDebuggable)
-                .init();
-        LeapCreator.withBuilder(HomeActivity.this, apiKey)
-                .setDebugModeEnabled(isDebuggable)
-                .init();
+        LeapAUI.start(apiKey);
+        LeapCreator.start(apiKey);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        triggerService();
-        initLeap();
-        LeapAUI.enableWeb(appWebView);
+//        triggerService();
+//        initLeap();
+//        LeapAUI.enableWeb(appWebView);
     }
 
     @Override
