@@ -1,10 +1,10 @@
 package is.leap.android.sample.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleSharedPref;
@@ -28,7 +28,7 @@ public class SplashScrActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(splashLoaded) {
+        if (splashLoaded) {
             transitionActivity();
             return;
         }
@@ -41,7 +41,7 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private void transitionActivity() {
-        if (isAppRegisteredAlready()){
+        if (isAppRegisteredAlready()) {
             goToHome();
             finish();
             return;
@@ -51,8 +51,14 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private void registerApp() {
-        Intent transitionToHome = new Intent(this, RegisterActivity.class);
-        startActivity(transitionToHome);
+        String scannerActivity = "is.leap.android.creator.ui.activity.ScannerActivity";
+        try {
+            Class<?> scannerClass = Class.forName(scannerActivity);
+            Intent intent = new Intent(this, scannerClass);
+            startActivity(intent);
+        } catch (ClassNotFoundException ignored) {
+            // Shouldn't happen as the creator SDK is already part of Sample App
+        }
     }
 
     private void goToHome() {
@@ -61,6 +67,7 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private boolean isAppRegisteredAlready() {
-        return !sampleSharedPref.getRegisteredApp().equals(LeapSampleSharedPref.NOT_AVAILABLE);
+        String appApiKey = sampleSharedPref.getApiKey();
+        return appApiKey != null && !appApiKey.isEmpty();
     }
 }
