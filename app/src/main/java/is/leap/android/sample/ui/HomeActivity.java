@@ -7,7 +7,7 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import is.leap.android.aui.LeapAUI;
+import is.leap.android.aui.Leap;
 import is.leap.android.creator.LeapCreator;
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleSharedPref;
@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         appWebView.getSettings().setJavaScriptEnabled(true);
         appWebView.setWebViewClient(new WebViewClient());
         appWebView.loadUrl(webUrl);
-        LeapAUI.enableWeb(appWebView);
+        Leap.enableWeb(appWebView);
     }
 
     private void initLeap() {
@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         /*
         Initialise the SDKs
          */
-        LeapAUI.start(apiKey);
+        Leap.start(apiKey);
         LeapCreator.start(apiKey);
     }
 
@@ -48,13 +48,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         initLeap();
-        LeapAUI.enableWeb(appWebView);
+        Leap.enableWeb(appWebView);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeapAUI.disable();
+        Leap.disable();
         LeapCreator.disable();
     }
 
