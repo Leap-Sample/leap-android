@@ -51,7 +51,7 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private void registerApp() {
-        String scannerActivity = "is.leap.android.creator.ui.activity.ScannerActivity";
+        String scannerActivity = "is.leap.android.creator.ui.activity.LeapScannerActivity";
         try {
             Class<?> scannerClass = Class.forName(scannerActivity);
             Intent intent = new Intent(this, scannerClass);
