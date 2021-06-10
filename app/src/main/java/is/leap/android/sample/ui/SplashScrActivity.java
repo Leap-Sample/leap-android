@@ -3,6 +3,7 @@ package is.leap.android.sample.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,10 @@ public class SplashScrActivity extends AppCompatActivity {
     Runnable transitionRunnable = this::transitionActivity;
     private static final int TIME_OUT = 2000;
     private boolean splashLoaded = false;
+    static final String PREVIEW_DEVICE_DOC_LINK_KEY = "previewDeviceDocLink";
+    static final String CONNECT_SAMPLE_APP_DOC_LINK_KEY = "connectSampleAppDocLink";
+    static final String PREVIEW_DEVICE_DOC_LINK = "https://docs.leap.is/getting-started-with-leap/in-app-experience/how-to-preview-projects-on-device";
+    static final String CONNECT_SAMPLE_APP_DOC_LINK = "https://docs.leap.is/getting-started-with-leap/leap-sample-app/how-to-connect-sample-app";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +60,11 @@ public class SplashScrActivity extends AppCompatActivity {
         try {
             Class<?> scannerClass = Class.forName(scannerActivity);
             Intent intent = new Intent(this, scannerClass);
+            intent.putExtra(CONNECT_SAMPLE_APP_DOC_LINK_KEY, CONNECT_SAMPLE_APP_DOC_LINK);
+            intent.putExtra(PREVIEW_DEVICE_DOC_LINK_KEY, PREVIEW_DEVICE_DOC_LINK);
             startActivity(intent);
-        } catch (ClassNotFoundException ignored) {
-            // Shouldn't happen as the creator SDK is already part of Sample App
+        } catch (ClassNotFoundException e) {
+            Log.e("SplashScrActivity", e.getMessage());
         }
     }
 
