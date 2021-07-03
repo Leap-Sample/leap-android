@@ -19,8 +19,10 @@ public class SplashScrActivity extends AppCompatActivity {
     private boolean splashLoaded = false;
     static final String PREVIEW_DEVICE_DOC_LINK_KEY = "previewDeviceDocLink";
     static final String CONNECT_SAMPLE_APP_DOC_LINK_KEY = "connectSampleAppDocLink";
+    static final String GENERATE_QR_DOC_LINK_KEY = "generateQrHelp";
     static final String PREVIEW_DEVICE_DOC_LINK = "https://docs.leap.is/getting-started-with-leap/in-app-experience/how-to-preview-projects-on-device";
     static final String CONNECT_SAMPLE_APP_DOC_LINK = "https://docs.leap.is/getting-started-with-leap/leap-sample-app/how-to-connect-sample-app";
+    static final String GENERATE_QR_DOC_LINK = "https://docs.leap.is/getting-started-with-leap/in-app-experience/how-to-generate-qr-secret-otp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class SplashScrActivity extends AppCompatActivity {
             Intent intent = new Intent(this, scannerClass);
             intent.putExtra(CONNECT_SAMPLE_APP_DOC_LINK_KEY, CONNECT_SAMPLE_APP_DOC_LINK);
             intent.putExtra(PREVIEW_DEVICE_DOC_LINK_KEY, PREVIEW_DEVICE_DOC_LINK);
+            intent.putExtra(GENERATE_QR_DOC_LINK_KEY, GENERATE_QR_DOC_LINK);
             startActivity(intent);
         } catch (ClassNotFoundException e) {
             Log.e("SplashScrActivity", e.getMessage());
