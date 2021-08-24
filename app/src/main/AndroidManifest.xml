@@ -6,6 +6,10 @@
         android:name="com.google.android.gms.vision.DEPENDENCIES"
         android:value="barcode" />
 
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,6 +42,14 @@
             android:name=".receiver.SampleAppReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".LeapFirebaseService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
