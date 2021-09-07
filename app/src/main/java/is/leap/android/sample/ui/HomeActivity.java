@@ -1,7 +1,5 @@
 package is.leap.android.sample.ui;
 
-import static is.leap.android.sample.util.NotificationUtils.PROJECT_ID;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -43,17 +41,15 @@ public class HomeActivity extends AppCompatActivity {
         Initialise the SDKs
          */
         Leap.start(apiKey);
-        LeapCreator.start(apiKey);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        initLeap();
-        Leap.enableWeb(appWebView);
 
-        if (intent != null && intent.hasExtra(PROJECT_ID)) {
-            Leap.startProject(intent.getStringExtra(PROJECT_ID));
+        if (intent != null && intent.hasExtra("project_id")) {
+            String projectId = intent.getStringExtra("project_id");
+            Leap.embedProject(projectId);
         }
     }
 
