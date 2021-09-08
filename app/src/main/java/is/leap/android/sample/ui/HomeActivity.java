@@ -47,9 +47,15 @@ public class HomeActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
+        //6. Since the intent destination was here, we will handle the received intent here
         if (intent != null && intent.hasExtra("project_id")) {
+            //7. Get the project_id from intent
             String projectId = intent.getStringExtra("project_id");
-            Leap.embedProject(projectId);
+            //8. Verify the project_id is not null or not empty
+            if (projectId != null && !projectId.isEmpty()) {
+                //9. Launch the project_id via Leap SDK's 'embedProject' method
+                Leap.embedProject(projectId);
+            }
         }
     }
 

@@ -30,8 +30,6 @@ public class LeapFirebaseService extends FirebaseMessagingService {
     public static final String LEAP_SAMPLE = "LeapSample";
     private static final String NOTIFICATION_BG_COLOR = "#0A0B12";
     public static final String NOTIFICATION_ACTION_TEXT_COLOR = "#5B6CFF";
-    public static final String NOTIFICATION_BUTTON = "Launch";
-    public static final String PROJECT_ID = "project_id";
 
     public static final String FONT_COLOR = "<font color=\"";
     public static final String B = "\"><b>";
@@ -45,21 +43,28 @@ public class LeapFirebaseService extends FirebaseMessagingService {
         RemoteMessage.Notification remoteNotification = remoteMessage.getNotification();
         if (remoteNotification != null) {
 
-            Intent intent = new Intent(this, HomeActivity.class);
-            Map<String, String> data = remoteMessage.getData();//data from firebase
+            //1. Receive the data from Firebase
+            Map<String, String> data = remoteMessage.getData();
             String projectId = data.get("project_id");
+
+            //2. Create an intent (with project_id data as extra) and specify the destination
+            Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("project_id", projectId);
+
+            //3. Since we are launching a notification, we need to create a PendingIntent
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
                     REQUEST_CODE,
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
+            //4. Let's create a notification with the above created PendingIntent
             Notification notification = getNotification(this,
                     remoteNotification.getTitle(),
                     remoteNotification.getBody(),
-                    NOTIFICATION_BUTTON,
+                    "Launch",
                     pendingIntent);
 
+            //5. Let's launch the notification
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(NOTIFICATION_ID, notification);
         }
