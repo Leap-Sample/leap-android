@@ -40,8 +40,8 @@ public class HomeActivity extends AppCompatActivity {
         /*
         Initialise the SDKs
          */
-        Leap.start(apiKey);
-        LeapCreator.start(apiKey);
+//        Leap.start(apiKey);
+//        LeapCreator.start(apiKey);
     }
 
     @Override

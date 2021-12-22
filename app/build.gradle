@@ -3,6 +3,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
+apply plugin: 'kotlin-android'
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // local.properties file, in the rootProject folder.
@@ -25,7 +26,7 @@ android {
         }
     }
 
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.2"
 
     defaultConfig {
@@ -54,7 +55,7 @@ android {
             signingConfig signingConfigs.LeapSample
         }
     }
-    compileOptions {
+compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -70,4 +71,9 @@ dependencies {
 
     implementation 'is.leap.android:sdk:1.2.1'
     implementation 'is.leap.android:creator-sdk:1.2.1'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
