@@ -19,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.LeapAndroidSample">
+        <meta-data
+            android:name="com.mixpanel.android.MPConfig.EnableDebugLogging"
+            android:value="true" />
         <activity
             android:name=".ui.HomeActivity"
             android:launchMode="singleTask"

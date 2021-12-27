@@ -73,6 +73,8 @@ dependencies {
     implementation 'is.leap.android:creator-sdk:1.2.1'
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.mixpanel.android:mixpanel-android:5.0.0'
 }
 repositories {
     mavenCentral()
