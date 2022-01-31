@@ -5,43 +5,45 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.aui.Leap;
 import is.leap.android.creator.LeapCreator;
 import is.leap.android.sample.R;
-import is.leap.android.sample.data.LeapSampleSharedPref;
+import is.leap.android.sample.data.LeapSampleCache;
 
 public class HomeActivity extends AppCompatActivity {
 
-    String webUrl, apiKey;
-    LeapSampleSharedPref sharedPref;
+    public static final String IS_LEAP_INIT = "IS_LEAP_INIT";
     WebView appWebView;
+    private boolean isLeapInit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        initLeap();
+        if (savedInstanceState != null) isLeapInit = savedInstanceState.getBoolean(IS_LEAP_INIT);
+        if (!isLeapInit) initLeap();
 
         appWebView = findViewById(R.id.webView);
         appWebView.getSettings().setJavaScriptEnabled(true);
         appWebView.setWebViewClient(new WebViewClient());
-        appWebView.loadUrl(webUrl);
+        appWebView.loadUrl(LeapSampleCache.WEB_URL);
         Leap.enableWeb(appWebView);
     }
 
     private void initLeap() {
-        sharedPref = LeapSampleSharedPref.getInstance();
-        webUrl = sharedPref.getWebUrl();
-        apiKey = sharedPref.getApiKey();
+        Leap.start(LeapSampleCache.API_KEY);
+        LeapCreator.start(LeapSampleCache.API_KEY);
+        isLeapInit = true;
+    }
 
-        /*
-        Initialise the SDKs
-         */
-        Leap.start(apiKey);
-        LeapCreator.start(apiKey);
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_LEAP_INIT, isLeapInit);
     }
 
     @Override
@@ -49,13 +51,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         initLeap();
         Leap.enableWeb(appWebView);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Leap.disable();
-        LeapCreator.disable();
     }
 
     private void exitAndKillApp() {

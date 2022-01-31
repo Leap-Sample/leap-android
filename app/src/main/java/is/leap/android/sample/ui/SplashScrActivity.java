@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.sample.R;
+import is.leap.android.sample.data.LeapSampleCache;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 
 public class SplashScrActivity extends AppCompatActivity {
@@ -77,7 +78,7 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private boolean isAppRegisteredAlready() {
-        String appApiKey = sampleSharedPref.getApiKey();
+        String appApiKey = LeapSampleCache.API_KEY;
         return appApiKey != null && !appApiKey.isEmpty();
     }
 }
