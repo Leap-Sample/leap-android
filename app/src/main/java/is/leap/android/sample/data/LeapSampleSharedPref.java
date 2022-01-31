@@ -67,7 +67,7 @@ public class LeapSampleSharedPref {
         getEditor().clear().apply();
     }
 
-    private String readString(String key, String defaultValue) {
+    String getString(String key, String defaultValue) {
         try {
             return sharedPreferences.getString(key, defaultValue);
         } catch (Exception e) {
@@ -77,22 +77,6 @@ public class LeapSampleSharedPref {
 
     private SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
-    }
-
-    public String getApiKey() {
-        return readString(APP_API_KEY, null);
-    }
-
-    public String getWebUrl() {
-        return readString(WEB_URL, null);
-    }
-
-    public void setApiKey(String apiKey) {
-        save(APP_API_KEY, apiKey);
-    }
-
-    public void setWebUrl(String webUrl) {
-        save(WEB_URL, webUrl);
     }
 
 }

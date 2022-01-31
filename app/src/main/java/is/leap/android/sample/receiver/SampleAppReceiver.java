@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import is.leap.android.sample.data.LeapSampleCache;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.ui.HomeActivity;
 
@@ -21,8 +22,8 @@ public class SampleAppReceiver extends BroadcastReceiver {
         String apiKey = extras.getString(API_KEY);
         String webUrl = extras.getString(WEB_URL);
 
-        LeapSampleSharedPref.getInstance().setApiKey(apiKey);
-        LeapSampleSharedPref.getInstance().setWebUrl(webUrl);
+        LeapSampleCache.setApiKey(apiKey);
+        LeapSampleCache.setWebUrl(webUrl);
 
         Intent transitionToHome = new Intent(context, HomeActivity.class);
         transitionToHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
