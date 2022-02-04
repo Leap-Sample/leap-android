@@ -1,6 +1,7 @@
 package is.leap.android.sample.data;
 
 import static is.leap.android.sample.data.LeapSampleSharedPref.APP_API_KEY;
+import static is.leap.android.sample.data.LeapSampleSharedPref.APP_WEB_URL;
 
 import android.app.Application;
 
@@ -15,7 +16,7 @@ public class LeapSampleCache {
         LeapSampleSharedPref.init(application);
         leapSampleSharedPref = LeapSampleSharedPref.getInstance();
         API_KEY = leapSampleSharedPref.getString(APP_API_KEY, null);
-        WEB_URL = leapSampleSharedPref.getString(WEB_URL, null);
+        WEB_URL = leapSampleSharedPref.getString(APP_WEB_URL, null);
     }
 
     private LeapSampleCache() {
@@ -28,6 +29,6 @@ public class LeapSampleCache {
 
     public static void setWebUrl(String webUrl) {
         WEB_URL = webUrl;
-        leapSampleSharedPref.save(WEB_URL, webUrl);
+        leapSampleSharedPref.save(APP_WEB_URL, webUrl);
     }
 }

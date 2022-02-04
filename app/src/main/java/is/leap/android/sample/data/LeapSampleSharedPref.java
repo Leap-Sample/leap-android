@@ -15,7 +15,7 @@ public class LeapSampleSharedPref {
     private final SharedPreferences sharedPreferences;
 
     public static final String APP_API_KEY = "apiKey";
-    public static final String WEB_URL = "webUrl";
+    public static final String APP_WEB_URL = "webUrl";
 
     private LeapSampleSharedPref(Context mContext) {
         sharedPreferences = mContext.getSharedPreferences(LEAP_SAMPLE_CACHE, Context.MODE_PRIVATE);
