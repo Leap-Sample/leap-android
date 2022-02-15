@@ -12,11 +12,11 @@ public class LeapSampleCache {
 
     public static LeapSampleSharedPref leapSampleSharedPref;
 
-    public static void init(Application application) {
+    public static void init(Application application, String apiKey, String webUrl) {
         LeapSampleSharedPref.init(application);
         leapSampleSharedPref = LeapSampleSharedPref.getInstance();
-        API_KEY = leapSampleSharedPref.getString(APP_API_KEY, null);
-        WEB_URL = leapSampleSharedPref.getString(APP_WEB_URL, null);
+        API_KEY = leapSampleSharedPref.getString(APP_API_KEY, apiKey);
+        WEB_URL = leapSampleSharedPref.getString(APP_WEB_URL, webUrl);
     }
 
     private LeapSampleCache() {
