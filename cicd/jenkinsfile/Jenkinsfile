@@ -1,0 +1,138 @@
+pipeline {
+    agent {
+        kubernetes {
+            yamlFile 'cicd/yamls/K8sBuildPod.yaml'
+        }
+    }
+    environment {
+        //build version to be updated every release
+        // needs to be same as mentioned in build.gradle file
+        BUILD_VERSION_CORE = '1.3.2'
+        BUILD_VERSION_AUI = '1.3.2'
+
+        MAVEN_CENTRAL_REPO = 'https://repo.maven.apache.org/maven2'
+        LEAP_GROUP_ID = 'is/leap/android'
+        LEAP_CORE_ARTIFACT_ID = 'core-sdk'
+        LEAP_AUI_ARTIFACT_ID = 'sdk'
+        EXTENSION = '.aar'
+
+        ALPHA = 'alpha'
+        IS_CORE_ALPHA = 'false'
+        IS_AUI_ALPHA = 'false'
+        ANDROID_SDK_DIR = '/Users/USERNAME/Library/Android/sdk'
+        BUILD_CORE = 'false'
+        BUILD_AUI = 'true'
+    }
+    stages {
+
+       stage('set android sdk path'){
+        steps {
+           container('leap-android-build'){
+             withCredentials([string(credentialsId: 'ossrhUsername', variable: 'OSSRH_USERNAME'),
+                              string(credentialsId: 'ossrhPassword', variable: 'OSSRH_PASSWORD')]) {
+                 sh 'echo "sdk.dir=${ANDROID_SDK_DIR}" >> local.properties'
+                 sh 'echo "#Sonatype Login credentials" >> local.properties'
+                 sh 'echo "ossrhUsername=${OSSRH_USERNAME}" >> local.properties'
+                 sh 'echo "ossrhPassword=${OSSRH_PASSWORD}" >> local.properties'
+                 sh 'echo "isCoreAlpha=${IS_CORE_ALPHA}" >> local.properties'
+                 sh 'echo "isAUIAlpha=${IS_AUI_ALPHA}" >> local.properties'
+                 sh 'echo "isCreatorAlpha=${IS_CREATOR_ALPHA}" >> local.properties'
+             }
+               sh 'cat local.properties'
+           }
+        }
+       }
+
+        stage('build core sdk') {
+            when {
+                environment name: 'BUILD_CORE', value: 'true'
+            }
+            steps {
+                container('leap-android-build') {
+                    sh 'gradle core:publishProdReleasePublicationToSonatypeRepository closeAndReleaseSonatypeStagingRepository'
+                    sh 'gsutil cp -r core/build/outputs/mapping/prodRelease/* gs://android-private/prod/proguard-mappings/`date +"%d-%m-%Y"`/${BUILD_VERSION_CORE}/core/'
+                    sh 'curl --retry 30 --retry-delay 60 --retry-connrefused --retry-all-errors --fail "${MAVEN_CENTRAL_REPO}/${LEAP_GROUP_ID}/${LEAP_CORE_ARTIFACT_ID}/${BUILD_VERSION_CORE}/${LEAP_CORE_ARTIFACT_ID}-${BUILD_VERSION_CORE}${EXTENSION}" >> "/dev/null"'
+
+                }
+            }
+
+            post {
+                always {
+                    script {
+                        def userIds = [:]
+                        //Define userIds for target recipients here
+                        userIds.Shreyansh = 'UF7790L0G'
+                        userIds.Ashish = 'UGNET9P9N'
+                        userIds.Arnold = 'UHCMS87RD'
+                        slackUserTags = userIds.values().collect { "<@$it>" }.join(' ')
+                        slackChannel = "jenkins-android"
+                        slackMessageColor = "warning"
+                        coreSDK = "CORE-SDK"
+                    }
+                }
+                success {
+                    script {
+                        slackMessageColor = "good"
+                    }
+                }
+                failure {
+                    script {
+                        slackMessageColor = "danger"
+                    }
+                }
+                cleanup {
+                    echo "${currentBuild.fullDisplayName}"
+                    slackSend(channel: slackChannel, color: slackMessageColor
+                            , message: "Deploying SDK ${coreSDK} - Build version - ${BUILD_VERSION_CORE} - *${currentBuild.fullDisplayName} - _${currentBuild.result}!_*\n" +
+                            "<${BUILD_URL}|View results>\n" + slackUserTags)
+                }
+            }
+        }
+
+         stage('build aui sdk') {
+                    when {
+                        environment name: 'BUILD_AUI', value: 'true'
+                    }
+                    steps {
+                        container('leap-android-build') {
+                            sh 'gradle aui:publishProdReleasePublicationToSonatypeRepository closeAndReleaseSonatypeStagingRepository'
+                            sh 'gsutil cp -r aui/build/outputs/mapping/prodRelease/* gs://android-private/prod/proguard-mappings/`date +"%d-%m-%Y"`/${BUILD_VERSION_AUI}/aui/'
+                            sh 'curl --retry 30 --retry-delay 60 --retry-connrefused --retry-all-errors --fail "${MAVEN_CENTRAL_REPO}/${LEAP_GROUP_ID}/${LEAP_AUI_ARTIFACT_ID}/${BUILD_VERSION_AUI}/${LEAP_AUI_ARTIFACT_ID}-${BUILD_VERSION_AUI}${EXTENSION}" >> "/dev/null"'
+
+                        }
+                }
+        }
+
+    }
+    post {
+        always {
+            script {
+                def userIds = [:]
+                //Define userIds for target recipients here
+                userIds.Shreyansh = 'UF7790L0G'
+                userIds.Ashish = 'UGNET9P9N'
+                userIds.Arnold = 'UHCMS87RD'
+                slackUserTags = userIds.values().collect { "<@$it>" }.join(' ')
+                slackChannel = "jenkins-android"
+                slackMessageColor = "warning"
+                auiSDK = "AUI-SDK"
+            }
+        }
+        success {
+            script {
+                slackMessageColor = "good"
+            }
+        }
+        failure {
+            script {
+                slackMessageColor = "danger"
+            }
+        }
+        cleanup {
+            echo "${currentBuild.fullDisplayName}"
+            slackSend(channel: slackChannel, color: slackMessageColor
+                    , message: "Deploying ${auiSDK} - Build version - ${BUILD_VERSION_AUI} - *${currentBuild.fullDisplayName} - _${currentBuild.result}!_*\n" +
+                    "<${BUILD_URL}|View results>\n" + slackUserTags)
+        }
+    }
+}

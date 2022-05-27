@@ -1,0 +1,9 @@
+spec:
+  containers:
+    - name: leap-android-copy-build
+      image: asia.gcr.io/jiny-np-infra/jenkins/agents/leap-android-copy-build
+      command:
+        - cat
+      tty: true
+      resourceRequestCpu: 500m
+      resourceRequestMemory: 512Mi
