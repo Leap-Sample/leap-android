@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.sample.R;
-import is.leap.android.sample.data.LeapSampleCache;
 import is.leap.android.sample.data.LeapSampleSharedPref;
 
 public class SplashScrActivity extends AppCompatActivity {
