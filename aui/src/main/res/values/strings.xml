@@ -1,0 +1,9 @@
+<resources>
+    <string name="disable_assistant">Do you want to permanently disable the assistance?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी</string>
+    <string name="leap_stop">Stop</string>
+    <string name="leap_language">Language</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="leapTabletCheck">false</bool>
+    <declare-styleable name="LeapBgShapeView">
+        <attr name="leap_borderWidth" format="dimension" />
+        <attr name="leap_borderColor" format="color" />
+        <attr name="leap_shape" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="capsule" value="1" />
+            <enum name="rect" value="2" />
+        </attr>
+        <attr name="leap_radius" format="dimension" />
+        <attr name="leap_radius_topLeft" format="dimension" />
+        <attr name="leap_radius_topRight" format="dimension" />
+        <attr name="leap_radius_bottomRight" format="dimension" />
+        <attr name="leap_radius_bottomLeft" format="dimension" />
+        <attr name="leap_bgColor" format="color" />
+        <attr name="leap_enableShadow" format="boolean" />
+        <attr name="leap_elevation" format="dimension" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,172 @@
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from project.rootProject.path
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from project.rootProject.path
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+afterEvaluate {
+    publishing {
+
+        repositories {
+            // The repository to publish to, Sonatype/MavenCentral
+            maven {
+                // This is an arbitrary name, you may also use "mavencentral" or
+                // any other name that's descriptive for you
+                name = "AUISDK"
+
+                url = osssonatypeUrl
+
+                // The username and password we've fetched earlier
+                credentials {
+                    username ossrhUsername
+                    password ossrhPassword
+                }
+            }
+        }
+
+        publications {
+            // Creates a Maven publication called "prodDebug".
+            prodDebug(MavenPublication) {
+                // Applies the component for the prodDebug build variant.
+                from components.prodDebug
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = project.property('groupId')
+                artifactId = project.property('typeDebugPrefix')+project.property('artifactId')
+                version = android.defaultConfig.versionName
+
+                artifact sourcesJar
+                artifact javadocJar
+            }
+
+            // Creates a Maven publication called "betaRelease".
+            betaRelease(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.betaRelease
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = project.property('groupId')
+                artifactId = project.property('artifactId')
+                version = android.defaultConfig.versionName+android.productFlavors.beta.versionNameSuffix
+                artifact sourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = AUIPOMName
+                    description = AUIPOMDescription
+                    url = leapAndroidRepoUrl
+                    licenses {
+                        license {
+                            name = LicenseName
+                            url = LicenseUrl
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = devID
+                            name = devName
+                            email = devEmail
+                        }
+                    }
+                    // Version control info - if you're using GitHub, follow the format as seen here
+                    scm {
+                        connection = leapScmConnectionUrl
+                        developerConnection = leapScmDevUrl
+                        url = leapAndroidRepoUrl
+                    }
+                }
+            }
+
+            // Creates a Maven publication called "alphaRelease".
+            alphaRelease(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.alphaRelease
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = project.property('groupId')
+                artifactId = project.property('artifactId')
+                version = android.defaultConfig.versionName+android.productFlavors.alpha.versionNameSuffix
+                artifact sourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = AUIPOMName
+                    description = AUIPOMDescription
+                    url = leapAndroidRepoUrl
+                    licenses {
+                        license {
+                            name = LicenseName
+                            url = LicenseUrl
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = devID
+                            name = devName
+                            email = devEmail
+                        }
+                    }
+                    // Version control info - if you're using GitHub, follow the format as seen here
+                    scm {
+                        connection = leapScmConnectionUrl
+                        developerConnection = leapScmDevUrl
+                        url = leapAndroidRepoUrl
+                    }
+                }
+            }
+
+            // Creates a Maven publication called "productionRelease".
+            prodRelease(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.prodRelease
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = project.property('groupId')
+                artifactId = project.property('artifactId')
+                version = android.defaultConfig.versionName
+
+                artifact sourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = AUIPOMName
+                    description = AUIPOMDescription
+                    url = leapAndroidRepoUrl
+                    licenses {
+                        license {
+                            name = LicenseName
+                            url = LicenseUrl
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = devID
+                            name = devName
+                            email = devEmail
+                        }
+                    }
+                    // Version control info - if you're using GitHub, follow the format as seen here
+                    scm {
+                        connection = leapScmConnectionUrl
+                        developerConnection = leapScmDevUrl
+                        url = leapAndroidRepoUrl
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+signing {
+    sign publishing.publications
+}

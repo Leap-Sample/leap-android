@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="leap_393939">#393939</color>
+    <color name="leap_overlay_bg">#B3000000</color>
+    <color name="leap_overlay_bg_extra_light">#59000000</color>
+    <color name="leap_gradient_trash_bg_start">#99090909</color>
+    <color name="leap_disable_assistant_btn_border">#e1e1e1</color>
+    <color name="leap_33_transparent" >#33000000</color>
+    <color name="leap_33_opaque" >#33ffffff</color>
+</resources>

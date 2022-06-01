@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="leap_dialog_root" type="id"/>
+    <item name="leap_associate_icon" type="id"/>
+    <item name="ic_leap_cross" type="id"/>
+    <item name="leap_txt_yes_wrapper" type="id"/>
+    <item name="leap_txt_no_wrapper" type="id"/>
+</resources>

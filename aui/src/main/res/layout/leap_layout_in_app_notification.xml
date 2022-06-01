@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<is.leap.android.aui.ui.assist.view.DraggableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <FrameLayout
+        android:id="@+id/layout_notification_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+</is.leap.android.aui.ui.assist.view.DraggableLayout>
