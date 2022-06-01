@@ -78,7 +78,6 @@ public class SplashScrActivity extends AppCompatActivity {
     }
 
     private boolean isAppRegisteredAlready() {
-        String appApiKey = LeapSampleCache.API_KEY;
-        return appApiKey != null && !appApiKey.isEmpty();
+        return true;
     }
 }

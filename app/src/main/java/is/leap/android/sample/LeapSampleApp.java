@@ -9,13 +9,12 @@ import is.leap.android.sample.receiver.SampleAppReceiver;
 
 public class LeapSampleApp extends Application {
 
-//    public static String API_KEY_CLIENT = "1ea23aaa-7e8a-4e1e-bb0a-89a02fce28e9";
     public static String SAMPLE_APP_WEB_URL = "https://jiny.io/leap_sample_app/index";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        LeapSampleCache.init(this, API_KEY_CLIENT, SAMPLE_APP_WEB_URL);
+        LeapSampleCache.init(this, SAMPLE_APP_WEB_URL);
         initialiseReceiver(this);
     }
 

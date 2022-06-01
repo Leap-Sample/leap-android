@@ -2,6 +2,7 @@ package is.leap.android.sample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,11 +19,15 @@ public class HomeActivity extends AppCompatActivity {
     public static final String IS_LEAP_INIT = "IS_LEAP_INIT";
     WebView appWebView;
     private boolean isLeapInit;
+    private static String apiKey;
+    private static String projectID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        handleIntent(getIntent());
 
         if (savedInstanceState != null) isLeapInit = savedInstanceState.getBoolean(IS_LEAP_INIT);
         if (!isLeapInit) initLeap();
@@ -35,8 +40,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initLeap() {
-        Leap.start(LeapSampleCache.API_KEY);
-        LeapCreator.start(LeapSampleCache.API_KEY);
+        if (apiKey != null) {
+            Leap.start(apiKey);
+            LeapCreator.start(apiKey);
+        }
+        if (projectID != null) Leap.startProject(projectID);
         isLeapInit = true;
     }
 
@@ -49,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        handleIntent(intent);
         initLeap();
         Leap.enableWeb(appWebView);
     }
@@ -67,4 +76,22 @@ public class HomeActivity extends AppCompatActivity {
         exitAndKillApp();
     }
 
+    private void handleIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Log.d("extras:", extras.toString());
+            apiKey = extras.getString("apiKey");
+            if (apiKey != null) {
+                Log.d("apiKey:", apiKey);
+                LeapCreator.start(apiKey);
+                Leap.start(apiKey);
+            }
+
+            projectID = extras.getString("projectID");
+            if (projectID != null) {
+                Log.d("projectID:", projectID);
+                Leap.startProject(projectID);
+            }
+        }
+    }
 }
