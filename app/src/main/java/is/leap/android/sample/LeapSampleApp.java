@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.IntentFilter;
 
 import is.leap.android.sample.data.LeapSampleCache;
-import is.leap.android.sample.data.LeapSampleSharedPref;
 import is.leap.android.sample.receiver.SampleAppReceiver;
 
 public class LeapSampleApp extends Application {

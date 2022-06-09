@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import is.leap.android.aui.Leap;
-import is.leap.android.creator.LeapCreator;
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleCache;
 
@@ -83,7 +82,6 @@ public class HomeActivity extends AppCompatActivity {
             String apiKey = extras.getString("apiKey");
             if (apiKey != null) {
                 Log.d("apiKey:", apiKey);
-                LeapCreator.start(apiKey);
                 Leap.start(apiKey);
             }
 
