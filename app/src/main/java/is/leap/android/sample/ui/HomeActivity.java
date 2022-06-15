@@ -9,6 +9,16 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import is.leap.android.LeapSharedPref;
 import is.leap.android.aui.Leap;
 import is.leap.android.sample.R;
 import is.leap.android.sample.data.LeapSampleCache;
@@ -79,6 +89,17 @@ public class HomeActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             Log.d("extras:", extras.toString());
+
+            String stringProjectIdList = extras.getString("projectIDs");
+            if(stringProjectIdList != null && !stringProjectIdList.isEmpty()) {
+                Log.d("projectIDs: ", stringProjectIdList);
+                List<String> stringifiedProjectIdList = new ArrayList<>();
+                stringifiedProjectIdList.add(stringProjectIdList);
+                Map<String, List<String>> deploymentHeaderMap = new HashMap<>();
+                deploymentHeaderMap.put("x-jiny-deployment-ids", stringifiedProjectIdList);
+                saveResponseHeaders(deploymentHeaderMap);
+            }
+
             String apiKey = extras.getString("apiKey");
             if (apiKey != null) {
                 Log.d("apiKey:", apiKey);
@@ -90,6 +111,35 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("projectID:", projectID);
                 Leap.startProject(projectID);
             }
+
+            String embedProjectID = extras.getString("embedProjectID");
+            if(embedProjectID != null) {
+                Log.d("embedProjectID: ", embedProjectID);
+                Leap.embedProject(embedProjectID);
+            }
         }
+    }
+
+    public static void saveResponseHeaders(Map<String, List<String>> respHeaders) {
+        if (respHeaders == null || respHeaders.isEmpty()) return;
+        JSONObject configResponse = new JSONObject();
+        Set<String> resKeySet = respHeaders.keySet();
+        for (String resKey : resKeySet) {
+            if (resKey.startsWith("x-jiny")) {
+                String headerValue = getResponseValue(respHeaders, resKey);
+                try {
+                    configResponse.put(resKey, headerValue);
+                } catch (JSONException ignored) {
+                }
+            }
+        }
+        Log.d("projectIDs: header: ", configResponse.toString());
+        LeapSharedPref.getInstance().saveConfigResponseHeaders(configResponse);
+    }
+
+    private static String getResponseValue(Map<String, List<String>> respHeaders, String resKey) {
+        List<String> value = respHeaders.get(resKey);
+        if (value != null && value.size() >= 1) return value.get(0);
+        return null;
     }
 }
