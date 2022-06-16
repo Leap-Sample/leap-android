@@ -33,6 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 22
+        //Don't change the below often, check in the dashboard
         versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
