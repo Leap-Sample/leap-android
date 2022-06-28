@@ -1,1 +1,1 @@
-# LeapAndroidSample
+# Whatfix Android Sample
